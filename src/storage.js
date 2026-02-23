@@ -3,18 +3,48 @@ import fs from 'node:fs';
 const TRAINEE_DATA_FILE_PATH = './data/trainees.json';
 const COURSE_DATA_FILE_PATH = './data/courses.json';
 
+// ---------- TRAINEES ----------
+
 export function loadTraineeData() {
-  // Use the fs module to read the trainees.json file and return the data as a JavaScript object  
+  try {
+    const data = fs.readFileSync(TRAINEE_DATA_FILE_PATH, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error loading trainee data:', error.message);
+    return [];
+  }
 }
 
-export function saveTraineeData() {
-  // Use the fs module to write the updated trainee data back to the trainees.json file 
+export function saveTraineeData(updatedData) {
+  try {
+    fs.writeFileSync(
+      TRAINEE_DATA_FILE_PATH,
+      JSON.stringify(updatedData, null, 2)
+    );
+  } catch (error) {
+    console.error('Error saving trainee data:', error.message);
+  }
 }
+
+// ---------- COURSES ----------
 
 export function loadCourseData() {
-  // TODO: Implement
+  try {
+    const data = fs.readFileSync(COURSE_DATA_FILE_PATH, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error loading course data:', error.message);
+    return [];
+  }
 }
 
-export function saveCourseData() {
-  // TODO: Implement
+export function saveCourseData(updatedData) {
+  try {
+    fs.writeFileSync(
+      COURSE_DATA_FILE_PATH,
+      JSON.stringify(updatedData, null, 2)
+    );
+  } catch (error) {
+    console.error('Error saving course data:', error.message);
+  }
 }

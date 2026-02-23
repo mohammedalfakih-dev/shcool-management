@@ -1,6 +1,50 @@
-import { parseCommand } from "./command-parser.js";
+import promptSync from 'prompt-sync';
+import chalk from 'chalk';
 
-// This is the entry point of your application. 
-// Ask user for input, parse the command, and call the appropriate function from courseCommands.js or traineeCommands.js based on the command.
+import { parseCommand } from './command-parser.js';
+import { handleTraineeCommand } from './traineeCommands.js';
+import { handleCourseCommand } from './courseCommands.js';
 
-console.log('Hello world');
+const prompt = promptSync();
+
+console.log('School Management CLI');
+console.log('Type QUIT or q to exit.\n');
+
+while (true) {
+  const userInput = prompt('> ');
+
+  const parsed = parseCommand(userInput);
+
+  if (!parsed) {
+    console.log(chalk.red('ERROR: Invalid command'));
+    continue;
+  }
+
+  if (parsed.command === 'QUIT') {
+    console.log('Goodbye!');
+    process.exit(0);
+  }
+
+  const { command, subcommand, args } = parsed;
+
+  switch (command) {
+    case 'TRAINEE':
+      if (!subcommand) {
+        console.log(chalk.red('ERROR: Missing subcommand'));
+        break;
+      }
+      handleTraineeCommand(subcommand, args);
+      break;
+
+    case 'COURSE':
+      if (!subcommand) {
+        console.log(chalk.red('ERROR: Missing subcommand'));
+        break;
+      }
+      handleCourseCommand(subcommand, args);
+      break;
+
+    default:
+      console.log(chalk.red('ERROR: Invalid command'));
+  }
+}
